@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>List Server SA-MP</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #ffe14d;
+    --ink: #000;
+    --paper: #fff;
+    --pink: #ff6fb5;
+    --blue: #6c9cff;
+    --green: #7dffa6;
+    --orange: #ff9a4d;
+    --border: 4px solid var(--ink);
+    --shadow: 6px 6px 0 var(--ink);
+  }
+
+  /* ===== ANTI HIGHLIGHT ===== */
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Space Grotesk', 'Arial Black', 'Segoe UI', sans-serif;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+  *::selection { background: transparent; color: inherit; }
+  *::-moz-selection { background: transparent; color: inherit; }
+  a, button { outline: none; }
+  img { -webkit-user-drag: none; user-drag: none; pointer-events: none; }
+
+  body {
+    min-height: 100vh;
+    padding: 24px 16px 48px;
+    color: var(--ink);
+    background-color: var(--bg);
+    background-image: radial-gradient(var(--ink) 1.5px, transparent 1.5px);
+    background-size: 22px 22px;
+  }
+
+  .container {
+    max-width: 640px;
+    margin: 0 auto;
+  }
+
+  /* ===== PROFILE ===== */
+  .profile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 10px;
+    padding: 24px 18px;
+    background: var(--paper);
+    border: var(--border);
+    box-shadow: var(--shadow);
+    margin-bottom: 20px;
+    text-decoration: none;
+    color: var(--ink);
+    transition: transform 0.1s, box-shadow 0.1s;
+  }
+
+  .profile-avatar {
+    width: 96px;
+    height: 96px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: var(--border);
+    background: var(--pink);
+  }
+
+  .profile-name {
+    font-size: 1.2rem;
+    font-weight: 700;
+  }
+
+  .profile-handle {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 12px;
+    background: var(--green);
+    border: 3px solid var(--ink);
+    font-size: 0.9rem;
+    font-weight: 700;
+  }
+
+  .tiktok-icon {
+    width: 14px;
+    height: 14px;
+    fill: var(--ink);
+  }
+
+  /* ===== DONATE ===== */
+  .donate-box {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    padding: 16px 18px;
+    background: var(--pink);
+    border: var(--border);
+    box-shadow: var(--shadow);
+    margin-bottom: 36px;
+    text-decoration: none;
+    color: var(--ink);
+    transition: transform 0.1s, box-shadow 0.1s;
+  }
+
+  .donate-text h4 {
+    font-size: 1.1rem;
+    font-weight: 700;
+  }
+
+  .donate-text p {
+    font-size: 0.85rem;
+    font-weight: 500;
+  }
+
+  .donate-btn {
+    padding: 10px 16px;
+    background: var(--paper);
+    border: 3px solid var(--ink);
+    font-size: 0.9rem;
+    font-weight: 700;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  /* ===== JUDUL ===== */
+  .title-wrap {
+    text-align: center;
+    margin-bottom: 28px;
+  }
+
+  h1 {
+    display: inline-block;
+    padding: 8px 18px;
+    background: var(--paper);
+    border: var(--border);
+    box-shadow: var(--shadow);
+    font-size: 1.8rem;
+    font-weight: 700;
+    transform: rotate(-1.5deg);
+  }
+
+  .subtitle {
+    display: inline-block;
+    margin-top: 18px;
+    padding: 6px 12px;
+    background: var(--blue);
+    border: 3px solid var(--ink);
+    font-size: 0.9rem;
+    font-weight: 500;
+  }
+
+  .section-gap {
+    margin-top: 56px;
+  }
+
+  h2 {
+    display: inline-block;
+    padding: 8px 18px;
+    background: var(--paper);
+    border: var(--border);
+    box-shadow: var(--shadow);
+    font-size: 1.5rem;
+    font-weight: 700;
+    transform: rotate(1.5deg);
+  }
+
+  /* ===== SERVER CARD ===== */
+  .server-list {
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+  }
+
+  .server-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 14px;
+    padding: 16px 18px;
+    background: var(--paper);
+    border: var(--border);
+    box-shadow: var(--shadow);
+  }
+
+  .server-main {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    min-width: 0;
+  }
+
+  .server-icon {
+    width: 56px;
+    height: 56px;
+    flex-shrink: 0;
+    object-fit: cover;
+    background: var(--paper);
+    border: 3px solid var(--ink);
+    box-shadow: 3px 3px 0 var(--ink);
+  }
+
+  .server-info {
+    min-width: 0;
+  }
+
+  .server-info h3 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+
+  .server-info p {
+    font-size: 0.75rem;
+    font-weight: 500;
+    word-break: break-all;
+  }
+
+  .join-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 11px 18px;
+    background: var(--accent, var(--green));
+    color: var(--ink);
+    text-decoration: none;
+    border: 3px solid var(--ink);
+    box-shadow: 4px 4px 0 var(--ink);
+    font-size: 0.9rem;
+    font-weight: 700;
+    white-space: nowrap;
+    flex-shrink: 0;
+    transition: transform 0.1s, box-shadow 0.1s;
+  }
+
+  .discord-icon {
+    width: 18px;
+    height: 18px;
+    fill: var(--ink);
+    flex-shrink: 0;
+  }
+
+  /* ===== EFEK TEKAN ===== */
+  @media (hover: hover) {
+    .profile:hover,
+    .donate-box:hover {
+      transform: translate(-3px, -3px);
+      box-shadow: 9px 9px 0 var(--ink);
+    }
+    .join-btn:hover {
+      transform: translate(-2px, -2px);
+      box-shadow: 6px 6px 0 var(--ink);
+    }
+  }
+
+  .profile:active,
+  .donate-box:active {
+    transform: translate(6px, 6px);
+    box-shadow: 0 0 0 var(--ink);
+  }
+
+  .join-btn:active {
+    transform: translate(4px, 4px);
+    box-shadow: 0 0 0 var(--ink);
+  }
+
+  .empty {
+    padding: 18px;
+    background: var(--paper);
+    border: var(--border);
+    box-shadow: var(--shadow);
+    text-align: center;
+    font-weight: 700;
+  }
+
+  @media (max-width: 500px) {
+    h1 { font-size: 1.4rem; }
+    h2 { font-size: 1.2rem; }
+    .server-card {
+      flex-direction: column;
+      align-items: stretch;
+    }
+    .join-btn { justify-content: center; }
+    .donate-box {
+      flex-direction: column;
+      align-items: stretch;
+      text-align: center;
+    }
+    .donate-btn { text-align: center; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- Profile & donate diisi otomatis dari CONFIG di bagian script paling bawah -->
+  <a class="profile" id="profile" target="_blank" rel="noopener"></a>
+  <a class="donate-box" id="donate" target="_blank" rel="noopener"></a>
+
+  <div class="title-wrap">
+    <h1 id="pageTitle"></h1><br>
+    <p class="subtitle" id="pageSubtitle"></p>
+  </div>
+
+  <div class="server-list" id="serverList"></div>
+
+  <!-- ===== DISCORD CLIENT SA-MP ===== -->
+  <div class="title-wrap section-gap">
+    <h2 id="clientTitle"></h2><br>
+    <p class="subtitle" id="clientSubtitle"></p>
+  </div>
+
+  <div class="server-list" id="clientList"></div>
+</div>
+
+<script>
+  /* =====================================================
+     ✏️  EDIT BAGIAN INI SAJA UNTUK MENGUBAH ISI HALAMAN
+     ===================================================== */
+  const CONFIG = {
+
+    // ---------- JUDUL HALAMAN ----------
+    title: "List Server SA-MP",                                   // <-- GANTI JUDUL
+    subtitle: "Klik tombol Join Discord untuk langsung masuk",    // <-- GANTI SUBJUDUL
+
+    // ---------- PROFILE TIKTOK ----------
+    profile: {
+      name: "𝖅ë𝖑_𝕯á_𝕮ó𝖉𝖊𝖗_",                        // <-- GANTI NAMA TAMPILAN
+      handle: "@inimahwakwau_",                       // <-- GANTI USERNAME TIKTOK
+      link: "https://tiktok.com/@inimahwakwau_",      // <-- GANTI LINK TIKTOK
+      avatar: ""                                      // (OPSIONAL) kosongkan = foto otomatis dari TikTok. Isi "pp.jpg" kalau mau pakai foto manual
+    },
+
+    // ---------- DONATE ----------
+    donate: {
+      title: "Support Saya",                          // <-- GANTI JUDUL DONATE
+      subtitle: "Donate via Sociabuzz",               // <-- GANTI DESKRIPSI
+      button: "Donate Now",                           // <-- GANTI TEKS TOMBOL
+      link: "https://sociabuzz.com/dhika_21/tribe"    // <-- GANTI LINK SOCIABUZZ
+    },
+
+    // ---------- LIST SERVER ----------
+    // Tambah server: copy satu baris { ... }, lalu paste di bawahnya.
+    // color (opsional): "pink" | "blue" | "green" | "orange" | "yellow" | "white"
+    // Kalau color dikosongkan, warna tombol otomatis gonta-ganti.
+    servers: [
+      { name: "Rebecca Roleplay",              link: "https://discord.gg/PMhzpFyCCJ",   color: "green"  }, // <-- GANTI NAMA & LINK
+      { name: "Futuristic Roleplay",           link: "https://discord.gg/futuristicroleplay", color: "pink" },
+      { name: "Metro Reality Project Roleplay", link: "https://discord.gg/T27wtqCUMq",  color: "blue"   },
+      { name: "Valiant Roleplay",              link: "https://discord.gg/valiant-roleplay-sa-mp-1284425051302531082", color: "orange" },
+      { name: "Chaos Cop Chase",               link: "https://discord.gg/chaoscopchase-1197823262030303292", color: "green" },
+      { name: "Arsy Asia Roleplay",            link: "https://discord.gg/airasiarp",    color: "pink"   },
+      { name: "Gta Central ",                  link: "https://discord.gg/gtacentral",    color: "blue"   },
+      { name: "Internasional Roleplay ",            link: "https://discord.gg/KwEhurMtm7",    color: "green"  },
+      { name: "State Side Roleplay",            link: "https://discord.gg/stateside",    color: "orange" },
+      { name: "SWDM Kota Sotot",            link: "https://discord.gg/yde-secret-weapon-1002076279304097892",    color: "yellow" },
+      // { name: "NAMA SERVER BARU",           link: "https://discord.gg/LINK-BARU",    color: "blue"   },
+    ],
+
+    // ---------- LIST DISCORD CLIENT SA-MP ----------
+    // Isinya sama seperti list server, tapi khusus Discord client SA-MP.
+    clients: {
+      title: "Discord Client SA-MP",                         // <-- GANTI JUDUL SECTION CLIENT
+      subtitle: "Klik tombol Join Discord untuk gabung client", // <-- GANTI SUBJUDUL
+      list: [
+        { name: "Nezuko Client", link: "https://discord.gg/KdRuypbtxn", color: "yellow" }, // <-- GANTI NAMA & LINK
+        { name: "Zan Client", link: "https://discord.gg/ExYr766t4F", color: "blue"   },
+        // { name: "NAMA CLIENT BARU", link: "https://discord.gg/LINK-BARU", color: "pink" },
+      ]
+    }
+  };
+  /* ===================================================== */
+
+
+  const COLORS = {
+    pink: "#ff6fb5", blue: "#6c9cff", green: "#7dffa6",
+    orange: "#ff9a4d", yellow: "#ffe14d", white: "#ffffff"
+  };
+  // Urutan warna otomatis kalau "color" dikosongkan
+  const AUTO_COLORS = ["#7dffa6", "#ff6fb5", "#6c9cff", "#ff9a4d", "#ffe14d"];
+
+  function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+  }
+
+  const DISCORD_ICON = `
+    <svg class="discord-icon" viewBox="0 0 24 24">
+      <path d="M20.317 4.37a19.79 19.79 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.74 19.74 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.1 13.1 0 0 1-1.872-.892.077.077 0 0 1-.008-.128c.126-.094.252-.192.372-.291a.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.099.246.198.373.292a.077.077 0 0 1-.006.127 12.3 12.3 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.84 19.84 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/>
+    </svg>`;
+
+  const TIKTOK_ICON = `
+    <svg class="tiktok-icon" viewBox="0 0 24 24">
+      <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5.8 20.1a6.34 6.34 0 0 0 10.86-4.43V8.66a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1.84-.09z"/>
+    </svg>`;
+
+  function renderPage() {
+    const c = CONFIG;
+
+    document.title = c.title;
+    document.getElementById('pageTitle').textContent = c.title;
+    document.getElementById('pageSubtitle').textContent = c.subtitle;
+
+    // Profile
+    const p = document.getElementById('profile');
+    p.href = c.profile.link;
+    p.innerHTML = `
+      <img class="profile-avatar" id="profileAvatar" alt="Foto Profile" draggable="false">
+      <span class="profile-name">${escapeHtml(c.profile.name)}</span>
+      <span class="profile-handle">${TIKTOK_ICON}${escapeHtml(c.profile.handle)}</span>
+    `;
+
+    // Foto TikTok otomatis (urutan: manual -> unavatar -> inisial)
+    const tiktokUser = c.profile.handle.replace('@', '').trim();
+    const avatarUrls = [];
+    if (c.profile.avatar) avatarUrls.push(c.profile.avatar);
+    avatarUrls.push('https://unavatar.io/tiktok/' + encodeURIComponent(tiktokUser));
+    avatarUrls.push(fallbackAvatar(tiktokUser, 'ff6fb5', 180));
+    loadImg(document.getElementById('profileAvatar'), avatarUrls);
+
+    // Donate
+    const d = document.getElementById('donate');
+    d.href = c.donate.link;
+    d.innerHTML = `
+      <div class="donate-text">
+        <h4>${escapeHtml(c.donate.title)}</h4>
+        <p>${escapeHtml(c.donate.subtitle)}</p>
+      </div>
+      <span class="donate-btn">${escapeHtml(c.donate.button)}</span>
+    `;
+
+    // Server & client list
+    renderList('serverList', c.servers, 'Belum ada server.');
+    document.getElementById('clientTitle').textContent = c.clients.title;
+    document.getElementById('clientSubtitle').textContent = c.clients.subtitle;
+    renderList('clientList', c.clients.list, 'Belum ada client.');
+  }
+
+  function renderList(id, items, emptyText) {
+    const list = document.getElementById(id);
+    if (!items.length) {
+      list.innerHTML = '<div class="empty">' + emptyText + '</div>';
+      return;
+    }
+
+    list.innerHTML = items.map((s, i) => {
+      const color = COLORS[s.color] || AUTO_COLORS[i % AUTO_COLORS.length];
+      return `
+        <div class="server-card">
+          <div class="server-main">
+            <img class="server-icon" alt="" draggable="false"
+              data-invite="${escapeHtml(s.link)}" data-name="${escapeHtml(s.name)}" data-bg="${color.replace('#', '')}">
+            <div class="server-info">
+              <h3>${escapeHtml(s.name)}</h3>
+              <p>${escapeHtml(s.link)}</p>
+            </div>
+          </div>
+          <a href="${escapeHtml(s.link)}" target="_blank" rel="noopener" class="join-btn" style="--accent:${color}">
+            ${DISCORD_ICON}
+            Join Discord
+          </a>
+        </div>`;
+    }).join('');
+  }
+
+  /* ===== AUTO FOTO ===== */
+
+  // Gambar pengganti (inisial nama) kalau foto gagal diambil
+  function fallbackAvatar(name, bg, size) {
+    const ini = name.split(/\s+/).slice(0, 2).map(w => w[0] || '').join('').toUpperCase() || '?';
+    return 'https://ui-avatars.com/api/?name=' + encodeURIComponent(ini) +
+      '&background=' + bg + '&color=000&bold=true&size=' + (size || 128);
+  }
+
+  // Coba daftar URL satu per satu sampai ada yang berhasil
+  function loadImg(img, urls) {
+    let i = 0;
+    const next = () => { if (i < urls.length) img.src = urls[i++]; };
+    img.onerror = next;
+    next();
+  }
+
+  // Ambil kode invite dari link (discord.gg/KODE atau discord.com/invite/KODE)
+  function getInviteCode(link) {
+    try {
+      return new URL(link).pathname.split('/').filter(Boolean).pop() || '';
+    } catch (e) {
+      return '';
+    }
+  }
+
+  // Ambil icon server lewat API invite Discord (disimpan 12 jam di cache browser)
+  async function getDiscordIcon(code) {
+    const key = 'dcicon:' + code;
+    const TTL = 12 * 60 * 60 * 1000;
+    try {
+      const c = JSON.parse(localStorage.getItem(key));
+      if (c && Date.now() - c.t < TTL) return c.url;
+    } catch (e) {}
+
+    const res = await fetch('https://discord.com/api/v9/invites/' + encodeURIComponent(code));
+    if (!res.ok) throw new Error('Invite tidak valid: ' + res.status);
+    const data = await res.json();
+    const g = data.guild;
+    if (!g || !g.icon) throw new Error('Server tidak punya icon');
+
+    const ext = g.icon.startsWith('a_') ? 'gif' : 'png';
+    const url = 'https://cdn.discordapp.com/icons/' + g.id + '/' + g.icon + '.' + ext + '?size=128';
+    try { localStorage.setItem(key, JSON.stringify({ url: url, t: Date.now() })); } catch (e) {}
+    return url;
+  }
+
+  function loadServerIcons() {
+    document.querySelectorAll('.server-icon').forEach(img => {
+      // Tampilkan inisial dulu, lalu diganti icon asli kalau berhasil
+      img.src = fallbackAvatar(img.dataset.name, img.dataset.bg);
+
+      const code = getInviteCode(img.dataset.invite);
+      if (!code) return;
+      getDiscordIcon(code)
+        .then(url => { img.src = url; })
+        .catch(() => { /* tetap pakai inisial */ });
+    });
+  }
+
+  renderPage();
+  loadServerIcons();
+
+  // Blok klik kanan, drag, dan seleksi teks
+  ['contextmenu', 'dragstart', 'selectstart'].forEach(evt =>
+    document.addEventListener(evt, e => e.preventDefault())
+  );
+</script>
+</body>
+</html>
